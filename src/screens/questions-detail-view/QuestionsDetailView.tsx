@@ -3,7 +3,16 @@ import { RouteChildrenProps } from 'react-router'
 import { connect } from 'react-redux'
 import { RootState } from 'typesafe-actions'
 
+// Material UI
+import Typography from '@material-ui/core/Typography'
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+import CardActions from '@material-ui/core/CardActions'
+import List from '@material-ui/core/List'
+import Button from '@material-ui/core/Button'
+
 import { Choice } from 'components/choice/Choice'
+import { BodyWrapper } from 'components/body-wrapper/BodyWrapper'
 import { pollsSelectors, pollsActions } from 'features/polls'
 
 function mapStateToProps(
@@ -33,6 +42,8 @@ interface State {
   alreadyVoted: boolean
 }
 
+
+
 export class QuestionsDetailView extends React.Component<Props, State> {
   public state: State = { selectedEl: null, alreadyVoted: false }
 
@@ -55,28 +66,41 @@ export class QuestionsDetailView extends React.Component<Props, State> {
     if (!question) return null
 
     return (
-      <div>
-        <div>Question Details</div>
-        {question &&
-          question.choices.map(({ url, choice, votes, percentage }) => {
-            return (
-              <Choice
-                key={url}
-                url={url}
-                choice={choice}
-                votes={votes}
-                percentage={percentage}
-                onClick={this.handleSelect}
-              />
-            )
-          })}
-        <button
-          onClick={this.handleSave}
-          disabled={!this.state.selectedEl || this.state.alreadyVoted}
-        >
-          Save Vote
-        </button>
-      </div>
+      <BodyWrapper title={'Question Details'}>
+        <Card>
+          <CardContent>
+            <Typography gutterBottom variant="h3" component="h2">
+              {question.question}
+            </Typography>
+
+            <List>
+              {question.choices.map(({ url, choice, votes, percentage }) => {
+                return (
+                  <Choice
+                    key={url}
+                    url={url}
+                    choice={choice}
+                    votes={votes}
+                    percentage={percentage}
+                    onClick={this.handleSelect}
+                    selected={this.state.selectedEl === url}
+                  />
+                )
+              })}
+            </List>
+          </CardContent>
+          <CardActions>
+            <Button
+              size="small"
+              color="primary"
+              onClick={this.handleSave}
+              disabled={!this.state.selectedEl || this.state.alreadyVoted}
+            >
+              Save Vote
+            </Button>
+          </CardActions>
+        </Card>
+      </BodyWrapper>
     )
   }
 }

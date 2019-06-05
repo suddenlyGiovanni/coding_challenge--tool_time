@@ -29,12 +29,15 @@ export const getQuestion = ({
     .map(c => c.votes)
     .reduce((prev, curr) => prev + curr, 0)
 
-  const _choices = _question.choices.map(choice => {
-    return {
-      ...choice,
-      percentage: Math.floor((choice.votes / totalVotes) * 100),
-    }
-  })
+  const _choices = _question.choices
+    .map(choice => {
+      const percentage = Math.round((choice.votes / totalVotes) * 100)
+      return {
+        ...choice,
+        percentage: isNaN(percentage) ? 0 : percentage,
+      }
+    })
+    .sort((a, b) => b.votes - a.votes)
 
   return { ..._question, choices: _choices }
 }

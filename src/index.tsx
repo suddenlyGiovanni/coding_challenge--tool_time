@@ -3,28 +3,48 @@ import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
-import 'styles/index.css'
+import { makeStyles } from '@material-ui/styles'
+import Container from '@material-ui/core/Container'
 
 import { store } from 'store'
 import { Home } from 'screens/home/Home'
 import QuestionsView from 'screens/questions-view/QuestionsView'
 import QuestionsDetailView from 'screens/questions-detail-view/QuestionsDetailView'
 
+import 'styles/index.css'
+
 import * as serviceWorker from './serviceWorker'
 
 const rootElement = document.getElementById('root')
 
-const Root: React.FC = () => (
-  <Provider store={store}>
-    <BrowserRouter>
-      <Switch>
-        <Route exact path="/" component={QuestionsView} />
-        <Route path="/questions/:questionId" component={QuestionsDetailView} />
-        <Route component={Home} />
-      </Switch>
-    </BrowserRouter>
-  </Provider>
-)
+const useStyles = makeStyles({
+  root: {
+    width: '100%',
+    paddingTop: 20,
+    paddingBottom: 20,
+  },
+})
+
+const Root: React.FC = () => {
+  const classes = useStyles()
+
+  return (
+    <Provider store={store}>
+      <BrowserRouter>
+        <Container className={classes.root} maxWidth={'lg'}>
+          <Switch>
+            <Route exact path="/" component={QuestionsView} />
+            <Route
+              path="/questions/:questionId"
+              component={QuestionsDetailView}
+            />
+            <Route component={Home} />
+          </Switch>
+        </Container>
+      </BrowserRouter>
+    </Provider>
+  )
+}
 
 ReactDOM.render(<Root />, rootElement)
 
