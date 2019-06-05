@@ -18,10 +18,12 @@ export type PollsAction = ActionType<typeof pollsActions>
 
 export type PollsState = Readonly<{
   questions: PollsTypes.Questions
+  votes: PollsTypes.Choice[]
 }>
 
 const initialState: PollsState = {
   questions: [],
+  votes: [],
 }
 
 export const pollsReducer: Reducer<PollsState, PollsAction> = (
@@ -32,6 +34,14 @@ export const pollsReducer: Reducer<PollsState, PollsAction> = (
     return {
       ...state,
       questions: [...state.questions, ...action.payload.questions],
+    }
+  }
+
+  if (action.type === getType(pollsActions.setVoteResult)) {
+    const { choice } = action.payload
+    return {
+      ...state,
+      votes: [...state.votes, choice],
     }
   }
   return state

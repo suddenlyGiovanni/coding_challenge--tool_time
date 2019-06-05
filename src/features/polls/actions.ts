@@ -19,3 +19,11 @@ export const setQuestions = createAction(pollsTypes.SET_QUESTIONS, action => {
     return action({ questions: data })
   }
 })
+
+export const voteChoice = createAction(pollsTypes.VOTE_CHOICE, action => {
+  return ({ choiceUrl }: { choiceUrl: string }) => action({ choiceUrl })
+})
+
+export const setVoteResult = createAction(pollsTypes.SET_CHOICE, action => {
+  return ({ data }: { data: PollsTypes.Choice }) => action({ choice: data })
+})

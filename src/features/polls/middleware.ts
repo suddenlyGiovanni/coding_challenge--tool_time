@@ -13,6 +13,7 @@ export const pollsMiddleware: Middleware<
 > = () => next => action => {
   next(action)
 
+  // FETCH_QUESTIONS:
   if (action.type === getType(pollsActions.fetchQuestions)) {
     // listen for the fetch question action
     // dispatch a api fetch request with the correct data
@@ -34,6 +35,29 @@ export const pollsMiddleware: Middleware<
     if (action.type === getType(apiActions.apiSuccess)) {
       // in case of success...
       next(pollsActions.setQuestions(action.payload))
+    }
+  }
+
+  //  VOTE_CHOICE:
+  if (action.type === getType(pollsActions.voteChoice)) {
+    const { choiceUrl } = action.payload
+
+    next(
+      apiActions.apiRequest({
+        feature: getType(pollsActions.voteChoice),
+        method: 'POST',
+        baseURL: BASE_URL,
+        // questions/question_id/choices/choice_id
+        url: choiceUrl,
+      })
+    )
+  }
+
+  if (action.meta && action.meta.feature === getType(pollsActions.voteChoice)) {
+    // listen for the api actions [API_START, API_SUCCESS, API_END, API_ERROR, ACCESS_DENIED]
+    if (action.type === getType(apiActions.apiSuccess)) {
+      // in case of success...
+      next(pollsActions.setVoteResult(action.payload))
     }
   }
 }
