@@ -7,6 +7,9 @@ import 'styles/index.css'
 
 import { store } from 'store'
 import { Home } from 'screens/home/Home'
+import QuestionsView from 'screens/questions-view/QuestionsView'
+import QuestionsDetailView from 'screens/questions-detail-view/QuestionsDetailView'
+
 import * as serviceWorker from './serviceWorker'
 
 const rootElement = document.getElementById('root')
@@ -15,7 +18,8 @@ const Root: React.FC = () => (
   <Provider store={store}>
     <BrowserRouter>
       <Switch>
-        <Route path="/" component={Home} />
+        <Route exact path="/" component={QuestionsView} />
+        <Route path="/questions/:questionId" component={QuestionsDetailView} />
         <Route component={Home} />
       </Switch>
     </BrowserRouter>

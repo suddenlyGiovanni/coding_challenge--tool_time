@@ -13,7 +13,7 @@ export type Question = Readonly<{
   /** "2014-11-11T08:40:51.620Z" */
   published_at: string
   /** "/questions/1" */
-  ur: string
+  url: string
   choices: Choice[]
 }>
 

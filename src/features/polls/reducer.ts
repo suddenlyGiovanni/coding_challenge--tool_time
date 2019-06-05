@@ -33,7 +33,7 @@ export const pollsReducer: Reducer<PollsState, PollsAction> = (
   if (action.type === getType(pollsActions.setQuestions)) {
     return {
       ...state,
-      questions: [...state.questions, ...action.payload.questions],
+      questions: [...action.payload.questions],
     }
   }
 

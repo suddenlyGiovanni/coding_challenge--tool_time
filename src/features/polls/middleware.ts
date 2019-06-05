@@ -4,7 +4,10 @@ import { RootState, RootAction, getType } from 'typesafe-actions'
 import * as pollsActions from './actions'
 import { apiActions } from 'features/api'
 
-const BASE_URL = 'https://private-anon-2ecb3eac74-pollsapi.apiary-mock.com'
+const BASE_URL = {
+  mockServer: 'https://private-anon-2ecb3eac74-pollsapi.apiary-mock.com',
+  productionServer: 'https://polls.apiblueprint.org',
+}
 
 export const pollsMiddleware: Middleware<
   {},
@@ -21,7 +24,7 @@ export const pollsMiddleware: Middleware<
       apiActions.apiRequest({
         feature: getType(pollsActions.fetchQuestions),
         method: 'GET',
-        baseURL: BASE_URL,
+        baseURL: BASE_URL.productionServer,
         url: '/questions',
       })
     )
@@ -46,7 +49,7 @@ export const pollsMiddleware: Middleware<
       apiActions.apiRequest({
         feature: getType(pollsActions.voteChoice),
         method: 'POST',
-        baseURL: BASE_URL,
+        baseURL: BASE_URL.productionServer,
         // questions/question_id/choices/choice_id
         url: choiceUrl,
       })
